@@ -1,0 +1,26 @@
+from PIL import Image
+
+# Open the uploaded image file
+input_path = "/mnt/data/DALL·E 2024-11-25 16.18.06 - A futuristic and elegant representation of an AI persona in black and white. The image features a soft, glowing humanoid figure with abstract, etherea.webp"
+output_path = "/mnt/data/AI_persona_transparent.png"
+
+# Open the image and convert to "RGBA" to ensure transparency channel
+image = Image.open(input_path).convert("RGBA")
+
+# Replace the background (assumed white) with transparency
+data = image.getdata()
+new_data = []
+for item in data:
+    # If white background, make it transparent
+    if item[:3] == (255, 255, 255):  # White RGB
+        new_data.append((255, 255, 255, 0))  # Transparent
+    else:
+        new_data.append(item)
+
+# Update the image with the new data
+image.putdata(new_data)
+
+# Save the new image with transparency
+image.save(output_path, "PNG")
+
+output_path
